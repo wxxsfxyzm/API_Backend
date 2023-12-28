@@ -1,7 +1,10 @@
 package com.carlyu.apibackend.service
 
-import com.carlyu.apibackend.vo.ApiResponseVO
+import org.springframework.security.core.Authentication
 
 interface APIRemoteResponseHandler {
-    fun handleResponse(responseVO: ApiResponseVO): String
+    fun handleResponse(
+        authentication: Authentication,
+        text: String
+    ): String
 }

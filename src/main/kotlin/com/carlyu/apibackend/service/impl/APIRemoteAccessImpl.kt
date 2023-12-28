@@ -5,6 +5,7 @@ import com.carlyu.apibackend.service.APIRemoteAccess
 import com.carlyu.apibackend.utils.ApiCaller
 import org.springframework.stereotype.Service
 
+
 @Service
 class APIRemoteAccessImpl : APIRemoteAccess {
     override fun visitRemoteAPI(url: String, key: String, requestBody: GoogleApiRequestDTO): String {
