@@ -4,7 +4,7 @@ import com.carlyu.apibackend.dto.LoginDto
 import com.carlyu.apibackend.dto.LoginResponseDto
 import com.carlyu.apibackend.dto.RegisterDto
 import com.carlyu.apibackend.entity.User
-import com.carlyu.apibackend.exceptions.ApiException
+import com.carlyu.apibackend.exceptions.ApiResponseStatusException
 import com.carlyu.apibackend.service.HashService
 import com.carlyu.apibackend.service.TokenService
 import com.carlyu.apibackend.service.UserService
@@ -21,10 +21,10 @@ class AuthController(
 
     @PostMapping("/login")
     fun login(@RequestBody payload: LoginDto): LoginResponseDto {
-        val user = userService.findByUsername(payload.username) ?: throw ApiException(400, "Login failed")
+        val user = userService.findByUsername(payload.username) ?: throw ApiResponseStatusException(400, "Login failed")
 
         if (!hashService.checkBcrypt(payload.password, user.password)) {
-            throw ApiException(400, "Login failed")
+            throw ApiResponseStatusException(400, "Login failed")
         }
 
         return LoginResponseDto(
@@ -36,7 +36,7 @@ class AuthController(
     @PostMapping("/register")
     fun register(@RequestBody payload: RegisterDto): LoginResponseDto {
         if (userService.existsByUsername(payload.username)) {
-            throw ApiException(400, "Name already exists")
+            throw ApiResponseStatusException(400, "Name already exists")
         }
 
         val user = User(

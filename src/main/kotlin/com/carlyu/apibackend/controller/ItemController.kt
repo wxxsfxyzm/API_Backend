@@ -5,7 +5,7 @@ import com.carlyu.apibackend.dto.CreateItemDto
 import com.carlyu.apibackend.dto.ItemDto
 import com.carlyu.apibackend.dto.toDto
 import com.carlyu.apibackend.entity.Item
-import com.carlyu.apibackend.exceptions.ApiException
+import com.carlyu.apibackend.exceptions.ApiResponseStatusException
 import com.carlyu.apibackend.service.ItemService
 import com.carlyu.apibackend.utils.toUser
 import org.springframework.security.core.Authentication
@@ -29,7 +29,7 @@ class ItemController(
         val authUser = authentication.toUser()
 
         if (itemService.existsByNameAndUser(payload.name, authUser)) {
-            throw ApiException(409, "Item name already exists")
+            throw ApiResponseStatusException(409, "Item name already exists")
         }
 
         val item = Item(

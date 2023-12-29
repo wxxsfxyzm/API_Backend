@@ -7,4 +7,10 @@ interface APIRemoteResponseHandler {
         authentication: Authentication,
         text: String
     ): String
+
+    fun handleString(
+        authentication: Authentication,
+        requestApi: String,
+        text: String
+    ): String
 }
