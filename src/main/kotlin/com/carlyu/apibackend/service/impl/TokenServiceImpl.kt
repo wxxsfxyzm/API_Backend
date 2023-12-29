@@ -32,6 +32,7 @@ class TokenServiceImpl(
             val userId = jwt.claims["userId"] as Long
             userService.findById(userId)
         } catch (e: Exception) {
+            println(e.stackTrace)
             null
         }
     }
