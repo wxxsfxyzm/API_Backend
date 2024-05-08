@@ -1,7 +1,7 @@
 package com.carlyu.apibackend.service.impl
 
 import com.carlyu.apibackend.dto.GoogleApiRequestDTO
-import com.carlyu.apibackend.enums.url
+import com.carlyu.apibackend.enums.URL
 import com.carlyu.apibackend.service.APIRemoteAccess
 import com.carlyu.apibackend.service.APIRemoteResponseHandler
 import com.carlyu.apibackend.service.UserService
@@ -21,7 +21,7 @@ class APIRemoteResponseHandlerImpl(
     ): String = jacksonObjectMapper()
         .readTree(
             apiRemoteAccess.visitRemoteAPI(
-                url.GOOGLE_GEMINI_API.url,
+                URL.GOOGLE_GEMINI_API.url,
                 authentication.toUser().googleApiKey,
                 GoogleApiRequestDTO.createBody(text)
             )

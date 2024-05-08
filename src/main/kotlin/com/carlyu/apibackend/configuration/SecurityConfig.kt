@@ -29,11 +29,12 @@ class SecurityConfig(
             it.requestMatchers(HttpMethod.POST, "/api/login").permitAll()
             it.requestMatchers(HttpMethod.POST, "/api/register").permitAll()
             it.requestMatchers("/api/**").authenticated()
-            it.anyRequest().permitAll() // In case you have a frontend
+            //it.anyRequest().permitAll() // In case you have a frontend
         }
         http.logout {
-            it.logoutUrl("/api/logout")
+            it.logoutUrl("/logout")
             it.logoutSuccessUrl("/api/logout_success").permitAll()
+            it.invalidateHttpSession(true)
             //TODO: Saved for further use
             //it.logoutSuccessUrl("/api/login").permitAll()
         }
@@ -80,5 +81,9 @@ class SecurityConfig(
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
         return source
+    }
+
+    companion object {
+        private val log = org.slf4j.LoggerFactory.getLogger(this::class.java)
     }
 }

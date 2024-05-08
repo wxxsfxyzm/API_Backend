@@ -6,6 +6,7 @@ data class LoginDto(
 )
 
 data class RegisterDto(
+    val message: String?,
     val username: String,
     val password: String,
 )

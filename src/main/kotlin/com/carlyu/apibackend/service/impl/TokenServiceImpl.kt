@@ -1,6 +1,7 @@
 package com.carlyu.apibackend.service.impl
 
 import com.carlyu.apibackend.entity.User
+import com.carlyu.apibackend.service.TokenBlacklistCleanupService
 import com.carlyu.apibackend.service.TokenService
 import com.carlyu.apibackend.service.UserService
 import org.springframework.security.oauth2.jwt.*
@@ -12,7 +13,8 @@ import java.time.temporal.ChronoUnit
 class TokenServiceImpl(
     private val jwtDecoder: JwtDecoder,
     private val jwtEncoder: JwtEncoder,
-    private val userService: UserService
+    private val userService: UserService,
+    private val tokenBlacklistService: TokenBlacklistCleanupService
 ) : TokenService {
 
     override fun createToken(user: User): String {
@@ -23,6 +25,7 @@ class TokenServiceImpl(
             .subject(user.username)
             .claim("userId", user.id)
             .build()
+        tokenBlacklistService.cleanupExpiredTokens()
         return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).tokenValue
     }
 

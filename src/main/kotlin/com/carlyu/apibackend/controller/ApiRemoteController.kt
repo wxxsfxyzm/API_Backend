@@ -35,6 +35,7 @@ class ApiRemoteController(
         authentication: Authentication
     ): ResultVO {
         val user = authentication.toUser()
+        log.info(authentication.toString())
         if (user.googleSessionIsActive) {
             user.googleSessionIsActive = false
             user.googlePrompt = ""
@@ -47,7 +48,7 @@ class ApiRemoteController(
             // TODO make an exception class handling this
             log.info("User ${user.username} has no active session")
             return ResultVO(
-                msg = "User has no active session",
+                msg = "User ${user.username} has no active session",
                 code = 400
             )
         }
