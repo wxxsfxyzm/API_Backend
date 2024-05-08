@@ -47,7 +47,7 @@ class APIRemoteResponseHandlerImpl(
         }
     }
 
-    fun handleGoogleApiPrompt(
+    private fun handleGoogleApiPrompt(
         authentication: Authentication,
         text: String
     ): String {

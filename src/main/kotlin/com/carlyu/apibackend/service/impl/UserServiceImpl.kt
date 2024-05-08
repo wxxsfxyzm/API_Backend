@@ -10,19 +10,14 @@ class UserServiceImpl(
     val iUserInfoDAO: IUserInfoDAO
 ) : UserService {
 
-    override fun findById(id: Long): User? {
-        return iUserInfoDAO.findById(id)
-    }
+    override fun findById(id: Long): User? = iUserInfoDAO.findById(id)
 
-    override fun findByUsername(username: String): User? {
-        return iUserInfoDAO.findByUsername(username)
-    }
 
-    override fun existsByUsername(username: String): Boolean {
-        return iUserInfoDAO.findByUsername(username) != null
-    }
+    override fun findByUsername(username: String): User? = iUserInfoDAO.findByUsername(username)
 
-    override fun save(user: User): User? {
-        return iUserInfoDAO.save(user)
-    }
+
+    override fun existsByUsername(username: String): Boolean = iUserInfoDAO.findByUsername(username) != null
+
+
+    override fun save(user: User): User? = iUserInfoDAO.save(user)
 }

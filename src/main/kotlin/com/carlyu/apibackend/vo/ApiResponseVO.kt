@@ -6,7 +6,7 @@ data class ApiResponseVO(
     val apiResponse: String
 ) : Serializable {
 
-    override fun toString(): String {
-        return "ApiResponseVO(apiResponse='$apiResponse')"
-    }
+    override fun toString() =
+        "ApiResponseVO(apiResponse='$apiResponse')"
+
 }

@@ -120,7 +120,7 @@ class AuthController(
         )
     }
 
-    fun performLogout(request: HttpServletRequest, response: HttpServletResponse) {
+    private fun performLogout(request: HttpServletRequest, response: HttpServletResponse) {
         val authentication: Authentication? = SecurityContextHolder.getContext().authentication
         log.info("User ${authentication?.name} has logged out")
         tokenBlacklistCleanupService.setTokenExpired(authentication!!)

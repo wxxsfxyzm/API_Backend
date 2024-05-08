@@ -8,7 +8,7 @@
                     pattern="[%style{%d}{bright,green}][%highlight{%p}][%style{%t}{bright,blue}][%style{%C}{bright,yellow}]: %-25n%msg%n%style{%throwable}{red}"
                     disableAnsi="false"
                     noConsoleNoAnsi="false"/>
-            <!--                    [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%highlight(%p){ERROR=Bright RED, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}] [%style{[%t]}{bright,magenta}] [%style{%c{1.}.%M(%L)}{cyan}]: %n%msg%n"-->
+            <!-- [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%highlight(%p){ERROR=Bright RED, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}] [%style{[%t]}{bright,magenta}] [%style{%c{1.}.%M(%L)}{cyan}]: %n%msg%n"-->
 
 
         </Console>
