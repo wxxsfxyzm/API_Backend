@@ -14,6 +14,7 @@ object ApiCaller {
         log.info(requestBody.toJsonString())
         return webClient.post()
             .uri(apiUrl)
+            .header("Content-Type", "application/json")
             .bodyValue(requestBody.toJsonString())
             .retrieve()
             .bodyToMono(String::class.java)

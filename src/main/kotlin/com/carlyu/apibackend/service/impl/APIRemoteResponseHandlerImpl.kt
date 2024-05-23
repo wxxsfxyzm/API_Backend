@@ -17,6 +17,7 @@ class APIRemoteResponseHandlerImpl(
 ) : APIRemoteResponseHandler {
     override fun handleResponse(
         authentication: Authentication,
+        requestModelName: String,
         text: String
     ): String = jacksonObjectMapper()
         .readTree(

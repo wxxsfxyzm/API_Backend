@@ -14,7 +14,7 @@ class ApiRemoteController(
     private val userService: UserService,
     private val apiRemoteResponseHandler: APIRemoteResponseHandler
 ) {
-    @PostMapping("/googleApi")
+    @PostMapping("/runGoogleGenerativeAI")
     fun googleApi(
         authentication: Authentication,
         @RequestParam("text") text: String

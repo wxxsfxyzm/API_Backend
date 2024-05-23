@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication
 interface APIRemoteResponseHandler {
     fun handleResponse(
         authentication: Authentication,
+        requestModelName: String,
         text: String
     ): String
 
