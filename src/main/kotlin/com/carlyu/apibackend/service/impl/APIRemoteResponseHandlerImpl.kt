@@ -1,10 +1,13 @@
 package com.carlyu.apibackend.service.impl
 
 import com.carlyu.apibackend.dto.GoogleApiRequestDTO
-import com.carlyu.apibackend.enums.URL
+import com.carlyu.apibackend.enums.APIType
+import com.carlyu.apibackend.enums.APIType.GENSIN
+import com.carlyu.apibackend.enums.APIType.GOOGLE_GEMINI_API
 import com.carlyu.apibackend.service.APIRemoteAccess
 import com.carlyu.apibackend.service.APIRemoteResponseHandler
 import com.carlyu.apibackend.service.UserService
+import com.carlyu.apibackend.utils.UrlUtil
 import com.carlyu.apibackend.utils.toUser
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.security.core.Authentication
@@ -18,37 +21,40 @@ class APIRemoteResponseHandlerImpl(
     override fun handleResponse(
         authentication: Authentication,
         requestModelName: String,
+        requestModeName: String,
         text: String
     ): String = jacksonObjectMapper()
         .readTree(
             apiRemoteAccess.visitRemoteAPI(
-                URL.GOOGLE_GEMINI_API.url,
+                UrlUtil.getRequestUrl(GOOGLE_GEMINI_API, requestModelName, requestModeName),
                 authentication.toUser().googleApiKey,
-                GoogleApiRequestDTO.createBody(text)
+                GoogleApiRequestDTO.createBody(
+                    text,
+                    authentication.toUser().safetySettings,
+                    authentication.toUser().generationConfig!!.temperature,
+                    authentication.toUser().generationConfig!!.candidateCount,
+                    authentication.toUser().googleSystemInstruction
+                )
             )
         )
         .findValuesAsText("text")[0].toString()
 
     override fun handleString(
         authentication: Authentication,
-        requestApi: String,
+        requestApi: APIType,
         text: String
     ): String {
         return when (requestApi) {
-            "googleApi" ->
-                handleGoogleApiPrompt(authentication, text)
+            GOOGLE_GEMINI_API ->
+                handleGoogleChatInOneTimeGenerationMode(authentication, text)
 
-            "gensin" -> {
+            GENSIN -> {
                 "gensin"
-            }
-
-            else -> {
-                "error"
             }
         }
     }
 
-    private fun handleGoogleApiPrompt(
+    private fun handleGoogleChatInOneTimeGenerationMode(
         authentication: Authentication,
         text: String
     ): String {
@@ -57,7 +63,7 @@ class APIRemoteResponseHandlerImpl(
         if (!user.googleSessionIsActive) { // if user has no active session
             user.googleSessionIsActive = true // set user session to active
         } else { // if user has active session
-            existingPrompt = user.googlePrompt
+            existingPrompt = user.googleTextHistory
         }
         existingPrompt += text
         userService.save(user)

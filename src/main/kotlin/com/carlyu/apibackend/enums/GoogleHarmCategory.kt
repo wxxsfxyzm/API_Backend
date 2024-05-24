@@ -1,0 +1,8 @@
+package com.carlyu.apibackend.enums
+
+enum class GoogleHarmCategory {
+    HARM_CATEGORY_HARASSMENT,
+    HARM_CATEGORY_HATE_SPEECH,
+    HARM_CATEGORY_SEXUALLY_EXPLICIT,
+    HARM_CATEGORY_DANGEROUS_CONTENT
+}

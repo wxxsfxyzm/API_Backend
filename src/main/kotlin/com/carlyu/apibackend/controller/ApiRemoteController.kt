@@ -1,5 +1,6 @@
 package com.carlyu.apibackend.controller
 
+import com.carlyu.apibackend.enums.APIType.GOOGLE_GEMINI_API
 import com.carlyu.apibackend.service.APIRemoteResponseHandler
 import com.carlyu.apibackend.service.UserService
 import com.carlyu.apibackend.utils.toUser
@@ -17,14 +18,19 @@ class ApiRemoteController(
     @PostMapping("/runGoogleGenerativeAI")
     fun googleApi(
         authentication: Authentication,
-        @RequestParam("text") text: String
-    ): ApiResponseVO = ApiResponseVO(
+        @RequestParam("text") text: String,
+        @RequestParam("modelName") requestModelName: String,
+        @RequestParam("modeName") requestModeName: String,
+
+        ): ApiResponseVO = ApiResponseVO(
         apiResponse = apiRemoteResponseHandler
             .handleResponse(
                 authentication,
+                requestModelName,
+                requestModeName,
                 apiRemoteResponseHandler.handleString(
                     authentication,
-                    "googleApi",
+                    GOOGLE_GEMINI_API,
                     text
                 )
             )
@@ -38,7 +44,7 @@ class ApiRemoteController(
         log.info(authentication.toString())
         if (user.googleSessionIsActive) {
             user.googleSessionIsActive = false
-            user.googlePrompt = ""
+            user.googleTextHistory = ""
             userService.save(user)
             return ResultVO(
                 msg = "Session terminated",
@@ -54,16 +60,10 @@ class ApiRemoteController(
         }
     }
 
-    @PostMapping("/gensin")
-    fun gensin(
-        authentication: Authentication,
-        @RequestParam("text") text: String
-    ): ApiResponseVO = ApiResponseVO(
-        apiResponse = apiRemoteResponseHandler
-            .handleResponse(authentication, "介绍一下原神")
-    )
+    // TODO handle system instruction
 
     companion object {
         private val log = org.slf4j.LoggerFactory.getLogger(this::class.java)
     }
 }
+

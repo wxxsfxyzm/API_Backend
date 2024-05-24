@@ -6,7 +6,6 @@ import com.carlyu.apibackend.dto.RegisterDto
 import com.carlyu.apibackend.entity.User
 import com.carlyu.apibackend.exceptions.ApiResponseStatusException
 import com.carlyu.apibackend.service.HashService
-import com.carlyu.apibackend.service.TokenBlacklistCleanupService
 import com.carlyu.apibackend.service.TokenService
 import com.carlyu.apibackend.service.UserService
 import com.carlyu.apibackend.utils.toUser
@@ -24,7 +23,6 @@ class AuthController(
     private val hashService: HashService,
     private val tokenService: TokenService,
     private val userService: UserService,
-    private val tokenBlacklistCleanupService: TokenBlacklistCleanupService
 ) {
 
     @PostMapping("/login")
@@ -123,7 +121,6 @@ class AuthController(
     private fun performLogout(request: HttpServletRequest, response: HttpServletResponse) {
         val authentication: Authentication? = SecurityContextHolder.getContext().authentication
         log.info("User ${authentication?.name} has logged out")
-        tokenBlacklistCleanupService.setTokenExpired(authentication!!)
         SecurityContextLogoutHandler().logout(request, response, authentication)
     }
 

@@ -1,6 +1,8 @@
 package com.carlyu.apibackend.service.impl
 
 import com.carlyu.apibackend.dao.IUserInfoDAO
+import com.carlyu.apibackend.entity.GoogleAIUserConfig
+import com.carlyu.apibackend.entity.GoogleAIUserSafetySettings
 import com.carlyu.apibackend.entity.User
 import com.carlyu.apibackend.service.UserService
 import org.springframework.stereotype.Service
@@ -20,4 +22,17 @@ class UserServiceImpl(
 
 
     override fun save(user: User): User? = iUserInfoDAO.save(user)
+
+
+    override fun saveUserWithConfigAndInstruction(
+        user: User,
+        generationConfig: GoogleAIUserConfig,
+        systemInstruction: String,
+        safetySettings: List<GoogleAIUserSafetySettings>
+    ) {
+        user.generationConfig = generationConfig
+        user.googleSystemInstruction = systemInstruction
+        user.safetySettings = safetySettings.map { it.user = user; it }
+        iUserInfoDAO.save(user)
+    }
 }

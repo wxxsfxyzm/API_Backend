@@ -1,27 +1,48 @@
 package com.carlyu.apibackend.dto
 
+import com.carlyu.apibackend.entity.GoogleAIUserSafetySettings
 import com.nimbusds.jose.shaded.gson.GsonBuilder
 import java.io.Serializable
 
-
-data class Part(val text: String)
+data class Part(val text: String?)
 
 data class Contents(val parts: List<Part>)
 
-data class GoogleApiRequestDTO(val contents: Contents) : Serializable {
+data class GenerationConfig(
+    val temperature: Double = 1.00,
+    val candidateCount: Int?
+)
 
+data class SystemInstruction(val parts: Part)
+
+data class GoogleApiRequestDTO(
+    val contents: Contents?,
+    val safetySettings: List<GoogleAIUserSafetySettings>?,
+    val generationConfig: GenerationConfig?,
+    val systemInstruction: SystemInstruction?
+) : Serializable {
     companion object {
-        // 扩展函数，用于将数据类转换为 JSON 字符串
         fun Any.toJsonString(): String {
             val gson = GsonBuilder().setPrettyPrinting().create()
             return gson.toJson(this)
         }
 
-        // 示例数据的创建函数
-        fun createBody(text: String): GoogleApiRequestDTO {
-            val part1 = Part(text)
-            val contents1 = Contents(listOf(part1))
-            return GoogleApiRequestDTO(contents1)
+        fun fromString(json: String): GoogleApiRequestDTO {
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            return gson.fromJson(json, GoogleApiRequestDTO::class.java)
+        }
+
+        fun createBody(
+            contentsText: String,
+            safetySettings: List<GoogleAIUserSafetySettings>,
+            temperature: Double,
+            candidateCount: Int?,
+            systemInstructionText: String?
+        ): GoogleApiRequestDTO {
+            val contents = Contents(listOf(Part(contentsText)))
+            val generationConfig = GenerationConfig(temperature, candidateCount)
+            val systemInstruction = SystemInstruction(Part(systemInstructionText))
+            return GoogleApiRequestDTO(contents, safetySettings, generationConfig, systemInstruction)
         }
     }
 }

@@ -22,6 +22,17 @@ data class User(
     @Column(name = "google_session_is_active")
     var googleSessionIsActive: Boolean = false,
 
-    @Column(name = "google_prompt")
-    var googlePrompt: String = "",
+    @Column(name = "google_text_history")
+    var googleTextHistory: String = "",
+
+    @Column(name = "google_system_instruction")
+    var googleSystemInstruction: String = "",
+
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @JoinColumn(name = "generation_config_id")
+    var generationConfig: GoogleAIUserConfig? = null,
+
+
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "user")
+    var safetySettings: List<GoogleAIUserSafetySettings> = mutableListOf()
 )
