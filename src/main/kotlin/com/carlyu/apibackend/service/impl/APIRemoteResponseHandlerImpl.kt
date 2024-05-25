@@ -62,12 +62,20 @@ class APIRemoteResponseHandlerImpl(
         val user = authentication.toUser()
         var existingPrompt = ""
         if (!user.googleSessionIsActive) { // if user has no active session
+            log.info("User ${user.username} has no active session")
+            log.info("Starting new session for user ${user.username}")
             user.googleSessionIsActive = true // set user session to active
         } else { // if user has active session
+            log.info("User ${user.username} has active session")
+            log.info("Adding to existing prompt for user ${user.username}")
             existingPrompt = user.googleTextHistory
         }
         existingPrompt += text
         userService.save(user.apply { googleTextHistory = existingPrompt })
         return existingPrompt
+    }
+
+    companion object {
+        private val log = org.slf4j.LoggerFactory.getLogger(this::class.java)
     }
 }

@@ -35,7 +35,7 @@ class ApiRemoteController(
             )
     )
 
-    @GetMapping("/googleApi/terminate")
+    @GetMapping("/googleSession/terminate")
     fun terminateGoogleSession(
         authentication: Authentication
     ): ResultVO {

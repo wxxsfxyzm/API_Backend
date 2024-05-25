@@ -22,8 +22,8 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api")
-class AuthController(
+@RequestMapping("/api/auth")
+class UserController(
     private val hashService: HashService,
     private val tokenService: TokenService,
     private val userService: UserService,
@@ -79,6 +79,20 @@ class AuthController(
 
         return ResultVO(
             msg = "Reset password successfully",
+            code = 200,
+        )
+    }
+
+    @PostMapping("/set_google_system_instruction")
+    fun setGoogleSystemInstruction(
+        authentication: Authentication,
+        @RequestParam("instruction") instruction: String,
+    ): ResultVO {
+        val user = authentication.toUser()
+        user.googleSystemInstruction = instruction
+        userService.save(user)
+        return ResultVO(
+            msg = "Set instruction successfully",
             code = 200,
         )
     }
