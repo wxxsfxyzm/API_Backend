@@ -5,5 +5,5 @@ import com.carlyu.apibackend.dto.GoogleApiRequestDTO
 
 interface APIRemoteAccess {
 
-    fun visitRemoteAPI(url: String, key: String, requestBody: GoogleApiRequestDTO): String
+    fun visitRemoteAPI(remoteHost: String, remotePath: String, key: String, requestBody: GoogleApiRequestDTO): String
 }

@@ -26,7 +26,8 @@ class APIRemoteResponseHandlerImpl(
     ): String = jacksonObjectMapper()
         .readTree(
             apiRemoteAccess.visitRemoteAPI(
-                UrlUtil.getRequestUrl(GOOGLE_GEMINI_API, requestModelName, requestModeName),
+                UrlUtil.buildRequestHost(GOOGLE_GEMINI_API),
+                UrlUtil.buildRequestPath(GOOGLE_GEMINI_API, requestModelName, requestModeName),
                 authentication.toUser().googleApiKey,
                 GoogleApiRequestDTO.createBody(
                     text,
@@ -66,7 +67,7 @@ class APIRemoteResponseHandlerImpl(
             existingPrompt = user.googleTextHistory
         }
         existingPrompt += text
-        userService.save(user)
+        userService.save(user.apply { googleTextHistory = existingPrompt })
         return existingPrompt
     }
 }

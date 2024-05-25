@@ -15,7 +15,7 @@ data class User(
 
     @Column
     var password: String = "",
-
+    
     @Column(name = "google_api_key")
     var googleApiKey: String = "",
 
@@ -28,11 +28,15 @@ data class User(
     @Column(name = "google_system_instruction")
     var googleSystemInstruction: String = "",
 
-    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     @JoinColumn(name = "generation_config_id")
     var generationConfig: GoogleAIUserConfig? = null,
 
 
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "user")
     var safetySettings: List<GoogleAIUserSafetySettings> = mutableListOf()
-)
+) {
+    override fun toString(): String {
+        return "GoogleAIUserConfig(id=$id, userName='$username')"
+    }
+}

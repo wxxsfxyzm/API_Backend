@@ -3,7 +3,11 @@ package com.carlyu.apibackend.controller
 import com.carlyu.apibackend.dto.LoginDto
 import com.carlyu.apibackend.dto.LoginResponseDto
 import com.carlyu.apibackend.dto.RegisterDto
+import com.carlyu.apibackend.entity.GoogleAIUserConfig
+import com.carlyu.apibackend.entity.GoogleAIUserSafetySettings
 import com.carlyu.apibackend.entity.User
+import com.carlyu.apibackend.enums.GoogleHarmCategory
+import com.carlyu.apibackend.enums.GoogleHarmThreshold
 import com.carlyu.apibackend.exceptions.ApiResponseStatusException
 import com.carlyu.apibackend.service.HashService
 import com.carlyu.apibackend.service.TokenService
@@ -51,7 +55,10 @@ class AuthController(
             password = hashService.hashBcrypt(payload.password),
         )
 
-        val savedUser = userService.save(user)
+        val defaultConfig = GoogleAIUserConfig() // Create a default GoogleAIUserConfig instance
+
+
+        val savedUser = userService.saveUserWithConfigAndInstruction(user, defaultConfig, "", initConfig(defaultConfig))
 
         return LoginResponseDto(
             msg = "Register successfully",
@@ -123,6 +130,26 @@ class AuthController(
         log.info("User ${authentication?.name} has logged out")
         SecurityContextLogoutHandler().logout(request, response, authentication)
     }
+
+    private fun initConfig(defaultConfig: GoogleAIUserConfig) =
+        listOf(
+            GoogleAIUserSafetySettings(
+                category = GoogleHarmCategory.HARM_CATEGORY_HARASSMENT.toString(),
+                threshold = GoogleHarmThreshold.BLOCK_LOW_AND_ABOVE.toString()
+            ),
+            GoogleAIUserSafetySettings(
+                category = GoogleHarmCategory.HARM_CATEGORY_HATE_SPEECH.toString(),
+                threshold = GoogleHarmThreshold.BLOCK_LOW_AND_ABOVE.toString(),
+            ),
+            GoogleAIUserSafetySettings(
+                category = GoogleHarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT.toString(),
+                threshold = GoogleHarmThreshold.BLOCK_LOW_AND_ABOVE.toString(),
+            ),
+            GoogleAIUserSafetySettings(
+                category = GoogleHarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT.toString(),
+                threshold = GoogleHarmThreshold.BLOCK_LOW_AND_ABOVE.toString(),
+            )
+        )
 
     companion object {
         private val log = org.slf4j.LoggerFactory.getLogger(this::class.java)

@@ -12,13 +12,10 @@ interface UserService {
     fun existsByUsername(username: String): Boolean
     fun save(user: User): User?
 
-
     fun saveUserWithConfigAndInstruction(
         user: User,
         generationConfig: GoogleAIUserConfig,
         systemInstruction: String,
         safetySettings: List<GoogleAIUserSafetySettings>
-    ) {
-
-    }
+    ): User?
 }

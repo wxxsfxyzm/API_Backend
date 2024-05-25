@@ -21,8 +21,7 @@ class ApiRemoteController(
         @RequestParam("text") text: String,
         @RequestParam("modelName") requestModelName: String,
         @RequestParam("modeName") requestModeName: String,
-
-        ): ApiResponseVO = ApiResponseVO(
+    ): ApiResponseVO = ApiResponseVO(
         apiResponse = apiRemoteResponseHandler
             .handleResponse(
                 authentication,

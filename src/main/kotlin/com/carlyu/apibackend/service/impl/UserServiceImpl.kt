@@ -29,10 +29,10 @@ class UserServiceImpl(
         generationConfig: GoogleAIUserConfig,
         systemInstruction: String,
         safetySettings: List<GoogleAIUserSafetySettings>
-    ) {
+    ): User? {
         user.generationConfig = generationConfig
         user.googleSystemInstruction = systemInstruction
         user.safetySettings = safetySettings.map { it.user = user; it }
-        iUserInfoDAO.save(user)
+        return iUserInfoDAO.save(user)
     }
 }
