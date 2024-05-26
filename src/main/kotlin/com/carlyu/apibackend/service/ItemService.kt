@@ -1,8 +1,8 @@
 package com.carlyu.apibackend.service
 
-import com.carlyu.apibackend.dao.ItemDAO
 import com.carlyu.apibackend.entity.Item
 import com.carlyu.apibackend.entity.User
+import com.carlyu.apibackend.repository.ItemDAO
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 

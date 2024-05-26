@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.jwt.*
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import java.util.*
 
 @Service
 class TokenServiceImpl(
@@ -29,9 +30,11 @@ class TokenServiceImpl(
     override fun parseToken(token: String): User? {
         return try {
             val jwt = jwtDecoder.decode(token)
-            val userId = jwt.claims["userId"] as Long
+            val userId = UUID.fromString(jwt.claims["userId"] as String)
+            // println("userId: $userId")
             userService.findById(userId)
         } catch (e: Exception) {
+            println("Error parsing token")
             println(e.stackTrace)
             null
         }

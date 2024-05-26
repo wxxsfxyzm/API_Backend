@@ -20,7 +20,7 @@ data class GoogleAIUserSafetySettings(
     @Expose
     var threshold: String = "",
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     var user: User? = null
 )

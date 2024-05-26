@@ -3,9 +3,10 @@ package com.carlyu.apibackend.service
 import com.carlyu.apibackend.entity.GoogleAIUserConfig
 import com.carlyu.apibackend.entity.GoogleAIUserSafetySettings
 import com.carlyu.apibackend.entity.User
+import java.util.*
 
 interface UserService {
-    fun findById(id: Long): User?
+    fun findById(id: UUID): User?
 
     fun findByUsername(username: String): User?
 
@@ -18,4 +19,9 @@ interface UserService {
         systemInstruction: String,
         safetySettings: List<GoogleAIUserSafetySettings>
     ): User?
+
+
+    fun updateUserSafetySettings(userId: UUID, updatedSettings: List<GoogleAIUserSafetySettings>): Boolean
+
+    fun updateUserConfig(userId: UUID, updatedConfig: GoogleAIUserConfig): Boolean
 }

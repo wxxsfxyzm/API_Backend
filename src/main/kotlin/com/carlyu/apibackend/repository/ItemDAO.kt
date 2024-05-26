@@ -1,4 +1,4 @@
-package com.carlyu.apibackend.dao
+package com.carlyu.apibackend.repository
 
 import com.carlyu.apibackend.entity.Item
 import com.carlyu.apibackend.entity.User

@@ -28,8 +28,8 @@ data class GoogleAIUserConfig(
     @Expose
     var topK: Int = 64,
 
-    @OneToOne(mappedBy = "generationConfig")
-    var user: User? = null
+    /*    @OneToOne(mappedBy = "generationConfig")
+        var user: User? = null*/
 ) {
     override fun toString(): String {
         return "GoogleAIUserConfig(id=$id, temperature=$temperature, candidateCount=$candidateCount, topP=$topP, topK=$topK)"

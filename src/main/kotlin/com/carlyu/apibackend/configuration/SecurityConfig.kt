@@ -3,7 +3,6 @@ package com.carlyu.apibackend.configuration
 import com.carlyu.apibackend.service.TokenService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -26,10 +25,10 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         // Define public and private routes
         http.authorizeHttpRequests {
-            it.requestMatchers(HttpMethod.POST, "/api/login").permitAll()
-            it.requestMatchers(HttpMethod.POST, "/api/register").permitAll()
-            it.requestMatchers("/api/**").authenticated()
-            //it.anyRequest().permitAll() // In case you have a frontend
+            //it.requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
+            //it.requestMatchers(HttpMethod.POST, "/api/user/register").permitAll()
+            //it.requestMatchers("/api/**").authenticated()
+            it.anyRequest().permitAll() // In case you have a frontend
         }
         http.logout {
             it.logoutUrl("/logout")
@@ -67,6 +66,13 @@ class SecurityConfig(
                 it.disable()
             }
         }
+
+        /*        http.exceptionHandling {
+                    it.authenticationEntryPoint { request, response, authException ->
+                        CustomAuthenticationFailureHandler().onAuthenticationFailure(request, response, authException)
+                    }
+                    it.accessDeniedHandler(CustomAccessDeniedHandler())
+                }*/
 
         return http.build()
     }

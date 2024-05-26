@@ -1,13 +1,15 @@
 package com.carlyu.apibackend.exceptions
 
-import org.springframework.web.server.ResponseStatusException
+import com.carlyu.apibackend.enums.ResultEnum
 
 class ApiResponseStatusException(
-    code: Int,
+    val code: Int?,
     message: String
-) :
-    ResponseStatusException(
-        code,
-        message,
-        null
+) : RuntimeException(message) {
+    constructor(
+        resultEnum: ResultEnum
+    ) : this(
+        resultEnum.code,
+        resultEnum.message
     )
+}
